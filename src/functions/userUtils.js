@@ -1,29 +1,39 @@
-//testing a whole module
-const {calculateAge, getUserFullName, getUserInitials} = require('../functions/userUtils.js');
+//Bug found in condition whwre user has only first name
+function getUserFullName(user){
+    if(!user || !user.firstName || !user.lastName){
+        throw new Error('Invalid user data')
+    }
 
-//Test Suite or Procedure
-describe('User Utilities', () => {
+    return `${user.firstName} ${user.lastName}`; 
+}
 
-        //Test Cases
-        describe('getUserFullName', ()=>{
-            it('should return the full name of the user with first and last name', () => {
-                const user = {firstName: 'Bob', lastName: 'Smith' };
-                expect(getUserFullName(user)).toBe('Bob Smith');
-            });
+function calculateAge(birthYear, currentYear) {
+    if(isNaN(birthYear) || isNaN(currentYear)){
+        throw new Error('Invalid user data');
+    }
 
-            it('should throw an error if the user data is incomplete', () => {
-                const user = {firstName: 'Bob' };
-                expect(getUserFullName(user)).toThrow('Invalid user data');
-            });
-        });
+    const age = currentYear - birthYear;
 
-        //Test Cases
-        describe('calculateAge', ()=>{
-            it('should calculate the correct age based on birth year & current year', () => {
-               const birthYear = 2000;
-               const currentYear = 2025;
-               expect(calculateAge(birthYear,currentYear).toBe(25));
-            });
-        });
+    //Boundary condition
+    if (age <=0 && age > 124) {
+        throw new Error('Invalid birth year');
+    } else {
+        return age
+    }
+    
+}
 
-});
+//Assume that user object has user.firstName & user.lastName
+function getUserInitials(user){
+    if(!user || !user.firstName || !user.lastName){
+        throw new Error('Invalid user data')
+    }
+
+    return `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`; 
+}
+
+module.exports = {
+    getUserFullName,
+    calculateAge,
+    getUserInitials,
+}
